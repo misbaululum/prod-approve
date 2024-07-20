@@ -4,6 +4,4 @@
 @import 'style.css';
 @import 'dark.css';
 @import 'perfect-scrollbar/css/perfect-scrollbar.css';
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+

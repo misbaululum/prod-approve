@@ -22,8 +22,10 @@ class UserDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('action', 'user.action')
-            ->setRowId('id');
+            ->addColumn('action', function($row) {
+                
+            })
+            ->addIndexColumn();
     }
 
     /**
@@ -40,6 +42,10 @@ class UserDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
+                ->parameters([
+                    'delay' => 1000,
+                    'responsive' => true,
+                ])
                     ->setTableId('user-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
@@ -62,8 +68,9 @@ class UserDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            Column::make('id'),
-            Column::make('name'),
+            Column::make('DT_RowIndex')->title('#')->orderable(false)->searchable(false),
+            Column::make('id')->hidden(),
+            Column::make('nama'),
             Column::make('email'),
             Column::make('created_at'),
             Column::make('updated_at'),

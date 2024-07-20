@@ -12,7 +12,7 @@
         integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w=="
         crossorigin="anonymous" />
     @stack('css')
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/js/vendor/jquery.js', 'resources/css/app.css', 'resources/js/app.js'])
     @stack('jsModule')
 </head>
 
@@ -30,10 +30,34 @@
             </div>
         </div>
 
+        <div class="modal fade" id="modalAction" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            
+        <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Amet
+                                        consequatur
+                                        sint libero esse assumenda provident placeat sed porro ad iusto.
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary">Save changes</button>
+                                    </div>
+                                </div>
+                            </div>
+
+        </div>
+
         @include('layouts.settings')
 
         <footer>
-            Copyright © 2022 &nbsp <a href="https://www.youtube.com/c/mulaidarinull" target="_blank" class="ml-1"> Mulai Dari Null </a> <span> . All rights Reserved</span>
+            Copyright © 2024 &nbsp <a href="#" target="" class="ml-1"> Misbaul Ulum </a> <span> . All rights Reserved</span>
         </footer>
         <div class="overlay action-toggle">
         </div>

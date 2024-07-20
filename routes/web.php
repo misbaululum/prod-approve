@@ -15,13 +15,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return view('dashboard');
     })->name('dashboard');
 
-    Route::get('/users', [UserController::class, 'index'])->name('users');
-});
+    // Route::get('/users', [UserController::class, 'index'])->name('users');
 
-Route::prefix('profile')->group(function () {
-    Route::get('/', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::resource('users', UserController::class)->only([
+        'index', 'create', 'store', 'edit', 'update', 'destroy'
+    ])->names(['index' => 'users', 'create' => 'users.create', 'edit' => 'users.edit']);
+
+    Route::middleware('auth')->group(function () {
+        Route::get('/edit', [ProfileController::class, 'edit'])->name('edit');
+        Route::patch('/update', [ProfileController::class, 'update'])->name('update');
+        Route::delete('/destroy', [ProfileController::class, 'destroy'])->name('destroy');
+    });
 });
 
 require __DIR__.'/auth.php';
