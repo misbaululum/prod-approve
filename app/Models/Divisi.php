@@ -13,6 +13,6 @@ class Divisi extends Model
 
     public function kagroup()
     {
-        return $this->hasMany(KaGroup::class, 'divisi_id', 'id');
+        return $this->hasMany(Kagroup::class, 'divisi_id', 'id');
     }
 }

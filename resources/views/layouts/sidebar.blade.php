@@ -27,6 +27,13 @@
                         <span class="text-uppercase">User Interface</span>
                     </li>
                     <li>
+                        <a href="{{ route('produksi.index') }}" class="link">
+                        <i class="ti-package"></i>
+                        <span>Produksi</span>
+                        </a>
+                    </li>
+
+                    <li>
                         <a href="{{ route('users') }}" class="link">
                             <i class="ti-user"></i>
                             <span>Pengguna</span>

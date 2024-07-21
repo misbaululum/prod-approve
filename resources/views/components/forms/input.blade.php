@@ -1,4 +1,4 @@
-@props(['id' => 'id'. rand(), 'type' => 'text', 'label' => null])
+@props(['id' => 'id-input'. rand(), 'type' => 'text', 'label' => null])
 <div class="mb-2 form-wrapper">
    @if ($label)
         <label for="{{ $id }}" class="form-label">{{ $label }}</label>

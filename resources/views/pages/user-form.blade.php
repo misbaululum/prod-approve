@@ -16,7 +16,15 @@
             <x-forms.input type="password" label="Confirm Password" name="password_confirmation" />
         </div>
         <div class="col-md-12">
-            <x-forms.radio :options="$jenisKelamin" label="Jenis Kelamin" name="jenis_kelamin" />
+            <x-forms.radio value="{{ $data->kagroup?->jenis_kelamin }}" :options="$jenisKelamin" label="Jenis Kelamin" name="jenis_kelamin" />
+        </div>
+        <div class="col-md-12">
+            <x-forms.select name="divisi" label="Divisi">
+            @foreach ($divisi as $item)
+            <option value="{{ $item->id }}">{{ $item->nama }}</option> 
+
+            @endforeach
+            </x-forms>
         </div>
     </div>
 </x-modal>

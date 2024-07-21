@@ -21,6 +21,8 @@ class UserRequest extends FormRequest
             'password' => [Rule::requiredIf(function () {
                 return request()->routeIs('users.store');
             }), 'confirmed'],
+            'divisi' => 'required',
+            'jenis_kelamin' => 'required',
         ];
     }
 }

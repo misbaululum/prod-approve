@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\DataTables\UserDataTable;
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Divisi;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -23,6 +25,8 @@ class UserController extends Controller
      */
     public function create()
     {
+        $divisi = Divisi::all(); // Ambil semua divisi dari database
+
         return view('pages.user-form', [
             'action' => route('users.store'),
             'data' => new User(),
@@ -30,6 +34,7 @@ class UserController extends Controller
                 'Laki-laki' => 'L',
                 'Perempuan' => 'P'
             ],
+            'divisi' => $divisi, // Kirim data divisi ke view
         ]);
     }
     
@@ -38,14 +43,27 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
+        DB::beginTransaction();
         try {
             $user = new User($request->validated());
             $user->password = Hash::make($request->password);
             $user->save();
+
+            $divisi = Divisi::find($request->divisi);
+            $user->kagroup()->create([
+                'nama' => $request->nama,
+                'divisi_id' => $request->divisi,
+                'nama_divisi' => $request->nama,
+                'jenis_kelamin' => $request->jenis_kelamin,
+            ]);
+
+            DB::commit();
+
             return response()->json([
                 'status' => 'success'
             ]);
         } catch (\Throwable $th) {
+            DB::rollBack();
             return response()->json([
                 'status' => 'error',
                 'message' => $th->getMessage()
