@@ -27,6 +27,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/produksi/create', [ProduksiController::class, 'create'])->name('produksi.create');
     Route::post('/produksi', [ProduksiController::class, 'store'])->name('produksi.store');
     Route::put('/produksi/{produksi}', [ProduksiController::class, 'update'])->name('produksi.update');
+    Route::get('/produksi/{id}/edit', [ProduksiController::class, 'edit'])->name('produksi.edit');
+    Route::get('produksi/{produksi}', [ProduksiController::class, 'show'])->name('produksi.show');
+
 
     Route::middleware('auth')->group(function () {
         Route::get('/edit', [ProfileController::class, 'edit'])->name('edit');

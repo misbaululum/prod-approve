@@ -20,18 +20,13 @@ return new class extends Migration
             $table->date('tanggal'); // Tanggal
             $table->string('nama_produk'); // Nama Produk
             
-            $ukuran_ml = array_merge(
+            $table->enum('ukuran_ml', array_map(fn($v) => (string) $v, array_merge(
                 range(10, 100, 10),
                 range(200, 800, 100),
                 [150, 250, 350, 450, 550, 650, 750]
-            );
-            sort($ukuran_ml);
-            $ukuran_ml = array_map(fn($v) => (string) $v, $ukuran_ml);
-
-            $table->enum('ukuran_ml', $ukuran_ml); // Ukuran (enum) dalam ml
-            $table->enum('ukuran_l', array_map(fn($v) => (string) $v, range(1, 20))); // Ukuran (enum) dalam l
-
-            $bagian = [
+            )))->unique()->nullable();
+            $table->enum('ukuran_l', array_map(fn($v) => (string) $v, range(1, 20)))->unique()->nullable();
+            $table->enum('bagian', [
                 'Filling Manual',
                 'Filling Auto',
                 'Injection Seal/Press',
@@ -48,27 +43,29 @@ return new class extends Migration
                 'Packing Dus',
                 'Strapping/Penimbangan',
                 'Pallet',
-            ];
+            ])->nullable(); // Bagian (enum)
 
-            foreach ($bagian as $b) {
-                $table->integer(str_replace(' ', '_', strtolower($b)) . '_ml')->nullable();
-                $table->integer(str_replace(' ', '_', strtolower($b)) . '_l')->nullable();
-            }
-
-            $table->string('foto_standar')->nullable(); // Foto Standar (static image URL or path)
             $table->string('foto_real'); // Foto Real (camera capture)
             $operators = array_map(fn($v) => 'Operator ' . $v, range(1, 20));
             $table->enum('penanggung_jawab', $operators); // Penanggung Jawab (enum)
-            $table->timestamp('waktu_awal'); // Waktu Awal
-            $table->timestamp('waktu_akhir'); // Waktu Akhir
+            $table->time('waktu_awal')->nullable(); // Waktu Awal
+            $table->time('waktu_akhir')->nullable(); // Waktu Akhir
+
+            // Menambahkan kolom downtime, total_jam, dan keterangan
             $table->integer('downtime')->nullable(); // Downtime (in minutes)
-            $table->string('foto_awal_dt')->nullable(); // Foto Awal Downtime (camera capture)
-            $table->string('foto_akhir_dt')->nullable(); // Foto Akhir Downtime (camera capture)
             $table->decimal('total_jam', 8, 2)->nullable(); // Total Jam Kerja
-            $table->text('keterangan')->nullable();
+            $table->text('keterangan')->nullable(); // Keterangan
+
+            // Menambahkan kolom foto_awal_dt dan foto_akhir_dt
+            $table->string('foto_awal_dt')->nullable();
+            $table->string('foto_akhir_dt')->nullable();
+
+            // Status approve dan relasi user
             $table->boolean('status_approve')->nullable();
             $table->foreignId('user_approve_id')->nullable()->constrained('users');
             $table->string('user_approve')->nullable();
+
+            // Timestamps
             $table->timestamps();
         });
     }

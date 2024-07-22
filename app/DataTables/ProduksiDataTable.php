@@ -8,6 +8,7 @@ use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
+use Carbon\Carbon;
 
 class ProduksiDataTable extends DataTable
 {
@@ -17,21 +18,45 @@ class ProduksiDataTable extends DataTable
      * @param QueryBuilder $query Results from query() method.
      */
     public function dataTable(QueryBuilder $query): EloquentDataTable
+{
+    return (new EloquentDataTable($query))
+        ->addColumn('action', function($row) {
+            $editButton = '<a href="'. route('produksi.edit', $row->id) .'" class="btn btn-sm btn-primary">Edit</a>';
+            $viewButton = '<a href="'. route('produksi.show', $row->id) .'" class="btn btn-sm btn-info">View</a>';
+            return $viewButton . ' ' . $editButton;
+        })
+        ->addIndexColumn()
+        ->editColumn('tanggal', function($row) {
+            return $this->formatDate($row->tanggal);
+        })
+        ->editColumn('waktu_awal', function($row) {
+            return $this->formatTime($row->waktu_awal);
+        })
+        ->editColumn('waktu_akhir', function($row) {
+            return $this->formatTime($row->waktu_akhir);
+        });
+}
+
+    /**
+     * Format the date to d-m-Y.
+     */
+    private function formatDate($date)
     {
-        return (new EloquentDataTable($query))
-            ->addColumn('action', function($row) {
-                return '<a href="'. route('produksi.edit', $row->id) .'" class="btn btn-sm btn-primary">Edit</a>';
-            })
-            ->addIndexColumn()
-            ->editColumn('tanggal', function($row) {
-                return $row->tanggal->format('d-m-Y');
-            })
-            ->editColumn('waktu_awal', function($row) {
-                return $row->waktu_awal->format('H:i:s');
-            })
-            ->editColumn('waktu_akhir', function($row) {
-                return $row->waktu_akhir->format('H:i:s');
-            });
+        if ($date instanceof Carbon) {
+            return $date->format('d-m-Y');
+        }
+        return $date ? Carbon::parse($date)->format('d-m-Y') : 'N/A';
+    }
+
+    /**
+     * Format the time to H:i:s.
+     */
+    private function formatTime($time)
+    {
+        if ($time instanceof Carbon) {
+            return $time->format('H:i:s');
+        }
+        return $time ? Carbon::parse($time)->format('H:i:s') : 'N/A';
     }
 
     /**

@@ -1,7 +1,20 @@
 import iziToast from 'izitoast'
 import $ from 'jquery'
+import 'bootstrap-datepicker'
 import 'izitoast/dist/css/iziToast.min.css'
+import 'bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css'
 const modalEl = $('#modalAction')
+
+
+export function initDatePicker(selector = '.date', option = {}) {
+    const date = $(selector).datepicker({
+        autoclose: true,
+        todayHighlight: true,
+        format: 'dd-mm-yyyy',
+        ...options
+    })
+    return date
+}
 
 export function showToast(type = 'success', message = 'Berhasil Menyimpan Data') {
     iziToast[type]({
